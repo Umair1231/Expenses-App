@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 export default function LoginView() {
   const [ userName, setUserName ] = useState('');
   const [ password, setPassword ] = useState('');
+  const [ userError, setUserError ] = useState(false);
+  const [ passwordError, setPasswordError ] = useState(false);
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
@@ -18,6 +20,15 @@ export default function LoginView() {
     if(userName === '' || password === '')
     {
       console.log("Bad Entry")
+      if(userName === '')
+      {
+        setUserError(true)
+      }
+      if(password === '')
+      {
+        setPasswordError(true)
+      }
+      return
     }
 
     const formData = {
@@ -55,7 +66,7 @@ export default function LoginView() {
         onSubmit={handleLogin}
         className="bg-white shadow-md rounded px-10 pt-6 pb-8 mb-4 w-1/3 h-96">
         <h2 className="text-2xl text-gray-800 font-bold mb-4">Login</h2>
-        <div className="mb-4">
+        <div>
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Username
           </label>
@@ -67,8 +78,9 @@ export default function LoginView() {
             onChange={e => setUserName(e.target.value)}
           />
         </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+        {userError && <span className="text-sm text-red-600 p-1 mb-1 rounded">Username Field is required</span>}
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2 mt-4">
             Password
           </label>
           <input
@@ -79,7 +91,8 @@ export default function LoginView() {
             onChange={e => setPassword(e.target.value)}
           />
         </div>
-        <p className="text-sm text-indigo-500 hover:text-indigo-800 mb-6">
+        {passwordError && <span className="text-sm text-red-600 p-1 mb-1 rounded my-2">Password Field is required</span>}
+        <p className="text-sm text-indigo-500 hover:text-indigo-800 mb-6 mt-4">
           Forgot Password?
         </p>
         <p className="text-sm text-indigo-500 hover:text-indigo-800 mb-6">
